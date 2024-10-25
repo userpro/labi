@@ -1,10 +1,28 @@
-package main
+package homebrew
 
 import (
 	"bytes"
 	"os"
 	"os/exec"
+	"runtime"
 )
+
+const (
+	RuntimeOSMac = iota
+	RuntimeOSLinux
+	RuntimeOSOther
+)
+
+func checkOS() int {
+	switch os := runtime.GOOS; os {
+	case "darwin":
+		return RuntimeOSMac
+	case "linux":
+		return RuntimeOSLinux
+	default:
+		return RuntimeOSOther
+	}
+}
 
 func execCmd(name string, arg ...string) (string, string, error) {
 	var stdout, stderr bytes.Buffer
